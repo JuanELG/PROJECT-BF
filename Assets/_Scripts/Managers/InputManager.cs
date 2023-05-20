@@ -2,17 +2,21 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : BaseSingleton<InputManager>
 {
-    public static InputManager Instance;
-    
     public Action OnSprintAction;
 
     private PlayerInputs _inputs;
 
-    public void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        _inputs = new PlayerInputs();
         _inputs.Movement.Enable();
+    }
+
+    private void OnEnable()
+    {
         _inputs.Movement.Sprint.performed += NotifySprintAction;
     }
 
