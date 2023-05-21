@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3069280827646170436}
   - component: {fileID: 4674980013089473357}
+  - component: {fileID: 687928158017234069}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -50,8 +51,21 @@ MonoBehaviour:
   rotateSpeed: 5
   kitchenObjectLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   playerAnimatorController: {fileID: 10815678898127578}
+--- !u!114 &687928158017234069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300391645955591483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4317f84f033a5944bf9d1f57ce22b4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelConfig: {fileID: 0}
 --- !u!1001 &3616164428451667300
 PrefabInstance:
   m_ObjectHideFlags: 0

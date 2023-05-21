@@ -8,6 +8,6 @@ public class KitchenObject : MonoBehaviour
 
     public void Interact()
     {
-        
+        Debug.Log($"Interacting with kitchen object: {_kitchenObjectData.kitchenObjectName}");
     }
 }
