@@ -5,24 +5,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float runningSpeed = 10f;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float rotateSpeed = 5f;
     [SerializeField] private LayerMask kitchenObjectLayerMask;
-    
+    [SerializeField] private PlayerAnimatorController playerAnimatorController;
+
     public Action<KitchenObject> OnSelectedKitchenObjectChanged;
-    
-    private PlayerAnimatorController _playerAnimatorController;
-    
+
     private bool _isWalking = false;
     private Vector3 _lastInteractionDirection = Vector3.zero;
     private KitchenObject _selectedKitchenObject;
+    private float _currentSpeed = 0f;
     
     private void Start()
     {
-        InputManager.Instance.OnInteractEvent += OnInteractEvent;
+        InputManager.Instance.OnSprintAction += OnSprintAction;
+        InputManager.Instance.OnInteractAction += OnInteractAction;
+        _currentSpeed = movementSpeed;
     }
 
-    private void OnInteractEvent()
+    private void OnSprintAction(bool isRunning)
+    {
+        _currentSpeed = isRunning ? runningSpeed : movementSpeed;
+        playerAnimatorController.SetBoolAnimation(PlayerAnimations.IsRunning, isRunning);
+    }
+
+    private void OnInteractAction()
     {
         if(_selectedKitchenObject != null)
             _selectedKitchenObject.Interact();
@@ -39,14 +48,14 @@ public class PlayerController : MonoBehaviour
         Vector2 inputVector = InputManager.Instance.GetInputVector();
         Vector3 direction = new Vector3(inputVector.x, 0, inputVector.y);
         
-        float moveDistance = movementSpeed * Time.deltaTime;
+        float moveDistance = _currentSpeed * Time.deltaTime;
         (bool canMove, Vector3 newDirection) = CheckIfCanMove(direction, moveDistance);
 
         if (canMove)
             transform.position += newDirection * moveDistance;
 
         _isWalking = direction != Vector3.zero;
-        _playerAnimatorController.SetBoolAnimation(PlayerAnimations.IsWalking, _isWalking);
+        playerAnimatorController.SetBoolAnimation(PlayerAnimations.IsWalking, _isWalking);
         transform.forward = Vector3.Slerp(transform.forward, newDirection, Time.deltaTime * rotateSpeed);
     }
     

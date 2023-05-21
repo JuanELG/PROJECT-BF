@@ -6,8 +6,8 @@ using UnityEngine.Networking;
 
 public class InputManager : BaseSingleton<InputManager>
 {
-    public Action OnSprintAction;
-    public Action OnInteractEvent;
+    public Action<bool> OnSprintAction;
+    public Action OnInteractAction;
 
     private PlayerInputs _inputs;
 
@@ -20,7 +20,9 @@ public class InputManager : BaseSingleton<InputManager>
 
     private void OnEnable()
     {
-        _inputs.Movement.Sprint.performed += NotifySprintAction;
+        _inputs.Movement.Sprint.started += NotifySprintActionStarted;
+        _inputs.Movement.Sprint.canceled += NotifySprintActionEnded;
+        _inputs.Movement.Interact.performed += NotifyInteractAction;
     }
 
     private void OnDisable()
@@ -28,14 +30,26 @@ public class InputManager : BaseSingleton<InputManager>
         _inputs.Disable();
     }
     
-    private void NotifySprintAction(InputAction.CallbackContext callbackContext)
-    {
-        OnSprintAction?.Invoke();
-    }
-
     public Vector2 GetInputVector()
     {
         return _inputs.Movement.WASD.ReadValue<Vector2>();
+    }
+    
+    private void NotifySprintActionStarted(InputAction.CallbackContext callbackContext)
+    {
+        bool isRunning = true;
+        OnSprintAction?.Invoke(isRunning);
+    }
+    
+    private void NotifySprintActionEnded(InputAction.CallbackContext callbackContext)
+    {
+        bool isRunning = false;
+        OnSprintAction?.Invoke(isRunning);
+    }
+
+    public void NotifyInteractAction(InputAction.CallbackContext callbackContext)
+    {
+        OnInteractAction?.Invoke();
     }
 }
 

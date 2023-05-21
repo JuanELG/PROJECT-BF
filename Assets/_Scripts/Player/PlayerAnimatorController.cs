@@ -14,11 +14,13 @@ public class PlayerAnimatorController : MonoBehaviour
 
     public void SetBoolAnimation(PlayerAnimations animationId, bool state)
     {
+        if (_animator.runtimeAnimatorController == null) return;
         _animator.SetBool(animationId.ToString(), state);
     }
 }
 
 public enum PlayerAnimations
 {
-    IsWalking
+    IsWalking,
+    IsRunning
 }
