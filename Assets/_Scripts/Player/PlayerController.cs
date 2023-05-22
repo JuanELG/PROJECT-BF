@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotateSpeed = 5f;
     [SerializeField] private LayerMask kitchenObjectLayerMask;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
+    [SerializeField] private CharacterData baseCharacterData;
 
     public Action<KitchenObject> OnSelectedKitchenObjectChanged;
 
